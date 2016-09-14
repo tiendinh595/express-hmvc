@@ -1,7 +1,7 @@
 /**
  * Created by Vu Tien Dinh on 9/14/2016.
  */
-module.exports = function (req, res, next) {
+module.exports = function (app, req, res, next) {
     return {
         index: function () {
             // console.log(this.model().getAll());

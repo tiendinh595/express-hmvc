@@ -3,9 +3,9 @@
  */
 var fs = require('fs');
 var util = require('util');
+var db = require('../app/config/database')
 module.exports = function (DEF) {
     return {
-
         moduleName : DEF.DEFAULT_MODULE,
         controllerName : DEF.DEFAULT_CONTROLLER,
         acionName : DEF.DEFAULT_ACTION,
@@ -17,7 +17,7 @@ module.exports = function (DEF) {
             console.log(controllerPath)
             if(fs.existsSync(controllerPath))
             {
-                return require(controllerPath)(req, res, next)
+                return require(controllerPath)(app, req, res, next)
             }
             else
             {
@@ -25,7 +25,7 @@ module.exports = function (DEF) {
             }
         },
 
-        loadModel: function (app, db, modelName) {
+        loadModel: function (app, modelName) {
             modelPath = DEF.DIR_MODULE + app.get('module') + '/model/' + modelName + '.js';
             if(fs.existsSync(modelPath))
                 return require(modelPath)(db);
@@ -68,7 +68,7 @@ module.exports = function (DEF) {
             controller = this.loadController(app, req, res, next, controllerName)
             if(typeof controller[acionName] !== 'undefined') {
                 //add propery, function
-                controller.model = this.loadModel(app, db, controllerName)
+                controller.model = this.loadModel(app, controllerName)
                 controller.load = this;
 
                 //exec request
