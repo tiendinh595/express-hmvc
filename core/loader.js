@@ -14,6 +14,7 @@ module.exports = function (DEF) {
         loadController: function (app, req, res, next, controllerName) {
             controllerName = controllerName+'Controller';
             controllerPath = DEF.DIR_MODULE + app.get('module') + '/controller/' + controllerName + '.js';
+            console.log(controllerPath)
             if(fs.existsSync(controllerPath))
             {
                 return require(controllerPath)(req, res, next)
@@ -49,7 +50,7 @@ module.exports = function (DEF) {
         },
 
         setPath: function (app, module) {
-            app.set('views', DEF.DIR_MODULE + app.get('module') + '/views/');
+            app.set('views', DEF.DIR_MODULE + module + '/views/');
         },
 
         loadRouter: function (app, req, res, next, strRoute) {
