@@ -24,10 +24,10 @@ module.exports = function (DEF) {
             }
         },
 
-        loadModel: function (app, modelName) {
+        loadModel: function (app, db, modelName) {
             modelPath = DEF.DIR_MODULE + app.get('module') + '/model/' + modelName + '.js';
             if(fs.existsSync(modelPath))
-                return require(modelPath);
+                return require(modelPath)(db);
             return null;
         },
 
@@ -59,7 +59,7 @@ module.exports = function (DEF) {
             acionName = route[2] || DEF.DEFAULT_ACTION;
             params = route[3] || {};
 
-            db = this.loadConfig('database');
+            var db = this.loadConfig('database');
 
             app.set('module', moduleName);
             this.setPath(app, moduleName);
@@ -67,8 +67,8 @@ module.exports = function (DEF) {
             controller = this.loadController(app, req, res, next, controllerName)
             if(typeof controller[acionName] !== 'undefined') {
                 //add propery, function
-                controller.model = this.loadModel(app, controllerName)
-                controller.db = db;
+                controller.model = this.loadModel(app, db, controllerName)
+                controller.load = this;
 
                 //exec request
                 controller[acionName](params);
