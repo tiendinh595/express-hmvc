@@ -31,9 +31,12 @@ app.use(multer({
     dest: DEF.DIR_PUBLIC+'/upload/temp'
 }).any());
 
+
+//router
 app.use(router.all('/:router([a-zA-Z-_0-9/]{0,})', function (req, res, next) {
     loader.loadRouter(app, req, res, next, req.params.router)
 }));
+loader.loadAllConfig(app);
 
 var server = app.listen(3000, function () {
     console.log("server started in http://127.0.0.1:3000");

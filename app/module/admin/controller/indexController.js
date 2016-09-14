@@ -3,7 +3,8 @@
  */
 module.exports = function (app, req, res, next) {
     return {
-        index: function () {
+        index: function (params) {
+            console.log(params)
             test = this.load.loadModel(app, 'test')
             console.log(test.getAll())
             res.render('index/index')

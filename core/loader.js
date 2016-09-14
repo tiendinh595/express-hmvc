@@ -4,6 +4,7 @@
 var fs = require('fs');
 var util = require('util');
 var db = require('../app/config/database')
+var Promise = require('promise');
 module.exports = function (DEF) {
     return {
         moduleName : DEF.DEFAULT_MODULE,
@@ -28,7 +29,7 @@ module.exports = function (DEF) {
         loadModel: function (app, modelName) {
             modelPath = DEF.DIR_MODULE + app.get('module') + '/model/' + modelName + '.js';
             if(fs.existsSync(modelPath))
-                return require(modelPath)(db);
+                return require(modelPath)(db, Promise);
             return null;
         },
 
@@ -74,8 +75,22 @@ module.exports = function (DEF) {
                 //exec request
                 controller[acionName](params);
             }
-            else
+            else {
+                loader.loadAllConfig(app);
                 this.showError(app, res)
+            }
+        },
+        
+        loadAllConfig: function (app) {
+            fs.readdir(DEF.DIR_ROUTE, function (err, fillenames) {
+                if(err)
+                    return null;
+                fillenames.forEach(function (filename) {
+                    filename = filename.replace('.js', '');
+                    console.log(DEF.DIR_ROUTE+filename);
+                    app.use('/'+filename, require(DEF.DIR_ROUTE+filename))
+                })
+            })
         }
     };
 };
