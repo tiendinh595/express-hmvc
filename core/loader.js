@@ -86,7 +86,6 @@ module.exports = function (DEF) {
                 fillenames.forEach(function (filename) {
                     filename = filename.replace('.js', '');
                     var url = filename.replace(/_/g, '/');
-                    console.log(url)
                     app.use('/'+url, require(DEF.DIR_ROUTE+filename))
                 })
             })
