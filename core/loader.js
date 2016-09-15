@@ -56,7 +56,9 @@ module.exports = function (DEF) {
             var moduleName = route[0] || DEF.DEFAULT_MODULE;
             var controllerName = route[1] || DEF.DEFAULT_CONTROLLER;
             var acionName = route[2] || DEF.DEFAULT_ACTION;
-            var params = route[3] || {};
+            var params = [];
+            if(typeof  route[3] != 'undefined')
+                params = route.splice(3);
 
             var db = this.loadConfig('database');
 

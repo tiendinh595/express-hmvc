@@ -3,12 +3,12 @@
  */
 module.exports = function (app, req, res, next) {
     return {
-        index: function () {
+        index: function (params) {
             // console.log(this.model().getAll());
             // this.model.getAllPost().then(function (data) {
             //     console.log(data)
             // });
-            console.log(this.load.moduleName)
+            console.log(params)
             res.render('index/show')
         },
 
