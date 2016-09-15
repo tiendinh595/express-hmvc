@@ -3,9 +3,10 @@
  */
 var express = require('express')
 var router= express.Router()
+var controller = require('../module/api/controller/indexController')
 
 router.get('/list', function (req, res, next) {
-    res.end("test api")
+    controller.index(req, res, next)
 })
 
 module.exports = router;
