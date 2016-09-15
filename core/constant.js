@@ -15,4 +15,8 @@ module.exports = {
     DEFAULT_MODULE: 'default',
     DEFAULT_CONTROLLER: 'index',
     DEFAULT_ACTION: 'index',
+
+    //aplication
+    PORT: 3000,
+    ENV: 'developer'
 };
