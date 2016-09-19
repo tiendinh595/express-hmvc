@@ -1,7 +1,7 @@
 /**
  * Created by Vu Tien Dinh on 9/14/2016.
  */
-
+'use strict';
 module.exports = function(db, Promise) {
     return {
         getAll: function () {

@@ -14,7 +14,7 @@ var path = require('path');
 var app = express();
 var urlEncodedParser = bodyParser.urlencoded({extended: false})
 
-const router = express.Router()
+var router = express.Router()
 
 app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
@@ -30,16 +30,14 @@ app.use(urlEncodedParser)
 app.use(multer({
     dest: DEF.DIR_PUBLIC+'/upload/temp'
 }).any());
+var auth = require('../app/middleware/auth');
 
 //router
-app.use(router.all('/:router([a-zA-Z-_0-9/]{0,})', function (req, res, next) {
-    loader.loadRouter(app, req, res, next, req.params.router)
-}));
+app.use('/:router([a-zA-Z-_0-9/]{0,})', function (req, res, next) {
+    loader.loadRouter(req, res, next, req.params.router, app, router)
+});
 loader.loadAllRouter(app);
-//
-// var server = app.listen(3000, function () {
-//     console.log("server started in http://127.0.0.1:3000");
-// });
+
 module.exports = {
     run: function() {
         app.listen(DEF.PORT, function () {

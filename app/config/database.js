@@ -1,6 +1,7 @@
 /**
  * Created by Vu Tien Dinh on 9/14/2016.
  */
+'use strict';
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
     host     : 'localhost',

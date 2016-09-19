@@ -51,33 +51,46 @@ module.exports = function (DEF) {
             app.set('views', DEF.DIR_MODULE + module + '/views/');
         },
 
-        loadRouter: function (app, req, res, next, strRoute) {
+        checkMiddleware: function (controller, acionName, app, req, res, next) {
+            var rules = controller.rules;
+            if (typeof rules[acionName] !== 'undifined') {
+                for (var middleware in rules[acionName]) {
+                    var middleware_arr = rules[acionName][middleware].split('.');
+                    var middleware_obj = require('../app/middleware/' + middleware_arr[0]);
+                    app.use(middleware_obj[middleware_arr[1]](req, res, next))
+                }
+            }
+        },
+
+        loadRouter: function (req, res, next, strRoute, app, router) {
             var route = strRoute.split('/');
             var moduleName = route[0] || DEF.DEFAULT_MODULE;
             var controllerName = route[1] || DEF.DEFAULT_CONTROLLER;
             var acionName = route[2] || DEF.DEFAULT_ACTION;
+            // acionName =  req.method.toLocaleLowerCase() +'_'+ acionName;
             var params = [];
             if(typeof  route[3] != 'undefined')
                 params = route.splice(3);
 
             var db = this.loadConfig('database');
-
             app.set('module', moduleName);
             this.setPath(app, moduleName);
 
             var controller = this.loadController(app, req, res, next, controllerName)
+            var auth = require('../app/middleware/auth')
 
             if(controller !== null && typeof controller[acionName] !== 'undefined') {
                 //add propery, function
                 controller.model = this.loadModel(app, controllerName)
                 controller.load = this;
+                this.checkMiddleware(controller, acionName, app, req, res, next);
 
+                // this.checkMiddleware(req, res, next, router, controller);
                 //exec request
                 controller[acionName](params);
             }
             else {
                 next();
-                //this.showError(app, res)
             }
         },
         

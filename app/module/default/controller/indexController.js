@@ -8,7 +8,7 @@ module.exports = function (app, req, res, next) {
             // this.model.getAllPost().then(function (data) {
             //     console.log(data)
             // });
-            console.log(params)
+            console.log("admin page")
             res.render('index/show')
         },
 
