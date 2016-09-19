@@ -52,7 +52,7 @@ module.exports = function (DEF) {
         },
 
         checkMiddleware: function (controller, acionName, app, req, res, next) {
-            var rules = controller.rules;
+            var rules = controller.rules || {};
             if (typeof rules[acionName] !== 'undifined') {
                 for (var middleware in rules[acionName]) {
                     var middleware_arr = rules[acionName][middleware].split('.');
