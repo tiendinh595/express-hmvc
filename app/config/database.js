@@ -3,21 +3,18 @@
  */
 'use strict';
 var mysql      = require('mysql');
-var connection = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'root',
-    password : '',
-    database : 'nodejs'
+var connection = mysql.createPool({
+    host     : '192.168.1.101',
+    user     : 'carsuser',
+    password : '123456',
+    database : 'carsdb',
 });
-
-connection.connect(function (err) {
+connection.getConnection(function (err, connect) {
     if(err)
     {
         console.log("connect fail mysql");
         process.exitCode = 1;
         throw new Error("connect fail mysql")
     }
-    else console.log("mysql connected")
 });
-
 module.exports = connection;

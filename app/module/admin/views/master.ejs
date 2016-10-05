@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('includes/head') %>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+    <header class="main-header">
+        <%- include('includes/header') %>
+    </header>
+
+    <!-- =============================================== -->
+
+    <!-- Left side column. contains the sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <%- include('includes/left') %>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- =============================================== -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Main content -->
+        <section class="content">
+            <!-- Default box -->
+            <%- include(view) %>
+        </section>
+    </div>
+
+    <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+<%- include('includes/script') %>
+
+</body>
+</html>

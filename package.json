@@ -1,7 +1,7 @@
 {
-  "name": "mvc",
+  "name": "xe hoi",
   "version": "1.0.0",
-  "description": "mvc",
+  "description": "xe hoi",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,13 +11,18 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "*",
+    "cheerio": "^0.22.0",
+    "commander": "latest",
     "cookie-parser": "*",
     "cookie-session": "*",
     "ejs": "*",
     "express": "^4.14.0",
+    "md5": "^2.2.1",
+    "merge": "^1.2.0",
     "multer": "*",
     "mysql": "*",
     "path": "^0.12.7",
-    "promise": "*"
+    "promise": "*",
+    "request": "latest"
   }
 }

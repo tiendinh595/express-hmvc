@@ -1,0 +1,71 @@
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Cập nhật thông tin xe</h3>
+    </div>
+    <div class="box-body">
+        <form class="form-horizontal" method="post">
+
+            <% if(typeof msg !== 'undefined') { %>
+                <div class="callout <%= msg.class %>">
+                    <p><%= msg.info %></p>
+                </div>
+            <%}%>
+
+            <div class="col-md-9">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#activity" data-toggle="tab" aria-expanded="true">Cơ bản</a></li>
+                        <% var id=0; for(var i in options){ id++; %>
+                            <li class=""><a href="#tab<%= id %>" data-toggle="tab" aria-expanded="false"><%= i %></a></li>
+                        <% } %>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="activity">
+                            <div class="form-group">
+                                <label class="col-sm-2">Tên xe</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="name" class="form-control" value="<%= car.name %>" placeholder="Name">
+                                </div>
+                            </div>
+                        </div>
+                        <% var id=0; for(var i in options){ id++; %>
+                            <div class="tab-pane" id="tab<%= id %>">
+                                <% for(var j=0; j<options[i].length; j++) {%>
+
+                                <%
+                                    var value = '';
+                                    for(var k=0; k<option.length; k++ ) {
+                                        if(options[i][j]['id'] == option[k]['option_id'])
+                                        {
+                                            value = option[k]['value'];
+                                            break;
+                                        }
+                                    }
+                                %>
+                                    <div class="form-group">
+                                        <label class="col-sm-3"><%= options[i][j]['name'] %></label>
+                                        <div class="col-sm-9">
+                                            <% if(options[i][j]['type'].trim() == 'select') { %>
+                                                <select type="text" name="options[o_<%= options[i][j]['id'] %>]" class="form-control">
+                                                    <option value="0" <% if(value==0) {%> selected="selected" <%} %>>Không</option>
+                                                    <option value="1" <% if(value==1) {%> selected="selected" <%} %>>Có</option>
+                                                </select>
+                                            <% } else { %>
+                                                <input type="text" name="options[o_<%= options[i][j]['id'] %>]" class="form-control" value="<%= value %>" placeholder="<%= options[i][j]['name'] %>">
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-danger">Lưu</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

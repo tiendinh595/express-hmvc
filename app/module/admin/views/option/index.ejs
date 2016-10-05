@@ -1,0 +1,33 @@
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Thông số xe</h3>
+    </div>
+    <div class="box-body">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-hover">
+                <% if(options.length > 0) { %>
+                <tbody>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Parent</th>
+                        <th>Type</th>
+                        <th></th>
+                    </tr>
+                    <% for(var i=0; i<options.length; i++) { %>
+                        <tr>
+                            <td><%= options[i].id %></td>
+                            <td><%= options[i].name %></td>
+                            <td><%= options[i].parent %></td>
+                            <td><%= options[i].type %></td>
+                            <td>
+                                <a href="/admin/option/edit/<%= options[i].id %>" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+                <% } %>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 /**
  * Created by Vu Tien Dinh on 9/14/2016.
  */
-'use strict'
+'use strict';
 var fs = require('fs');
 var util = require('util');
 var db = require('../app/config/database')
@@ -16,11 +16,17 @@ module.exports = function (DEF) {
         loadController: function (app, req, res, next, controllerName) {
             controllerName = controllerName+'Controller';
             var controllerPath = DEF.DIR_MODULE + app.get('module') + '/controller/' + controllerName + '.js';
-            if(fs.existsSync(controllerPath))
+            if(fs.existsSync(controllerPath) && typeof contr)
             {
-                return require(controllerPath)(app, req, res, next)
+                try {
+                    var obj = require(controllerPath)(app, req, res, next);
+                    return obj;
+                }catch (e) {
+                    return null;
+                }
+            } else {
+                return null;
             }
-            return null;
         },
 
         loadModel: function (app, modelName) {
@@ -53,21 +59,29 @@ module.exports = function (DEF) {
 
         checkMiddleware: function (controller, acionName, app, req, res, next) {
             var rules = controller.rules || {};
-            if (typeof rules[acionName] !== 'undifined') {
-                for (var middleware in rules[acionName]) {
-                    var middleware_arr = rules[acionName][middleware].split('.');
-                    var middleware_obj = require('../app/middleware/' + middleware_arr[0]);
-                    app.use(middleware_obj[middleware_arr[1]](req, res, next))
+            if (typeof rules[acionName] !== 'undefined' || typeof rules['*'] !== 'undefined') {
+                var list_rules = rules[acionName] || rules['*'];
+                for (var middleware in list_rules) {
+                    var middleware_arr = list_rules[middleware].split('.');
+                    var middleware_obj = require('../app/middleware/' + middleware_arr[0])();
+                    middleware_obj[middleware_arr[1]](req, res, next)
                 }
+            } else {
+                next();
             }
+        },
+
+        genAction: function(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
         },
 
         loadRouter: function (req, res, next, strRoute, app, router) {
             var route = strRoute.split('/');
             var moduleName = route[0] || DEF.DEFAULT_MODULE;
             var controllerName = route[1] || DEF.DEFAULT_CONTROLLER;
-            var acionName = route[2] || DEF.DEFAULT_ACTION;
-            // acionName =  req.method.toLocaleLowerCase() +'_'+ acionName;
+            var acionNameOrigin = route[2] || DEF.DEFAULT_ACTION;
+            acionNameOrigin = this.genAction(acionNameOrigin);
+            var acionName =  req.method.toLocaleLowerCase() + acionNameOrigin;
             var params = [];
             if(typeof  route[3] != 'undefined')
                 params = route.splice(3);
@@ -76,18 +90,24 @@ module.exports = function (DEF) {
             app.set('module', moduleName);
             this.setPath(app, moduleName);
 
-            var controller = this.loadController(app, req, res, next, controllerName)
-            var auth = require('../app/middleware/auth')
+            var controller = this.loadController(app, req, res, next, controllerName);
+            var auth = require('../app/middleware/auth');
 
-            if(controller !== null && typeof controller[acionName] !== 'undefined') {
-                //add propery, function
-                controller.model = this.loadModel(app, controllerName)
+            if(controller !== null) {
+                if(typeof controller[acionName] !== 'undefined')
+                    acionName = acionName;
+                else if(typeof controller['any'+acionNameOrigin] !== 'undefined')
+                    acionName = 'any'+acionNameOrigin;
+                else {
+                    next();
+                    return;
+                }
+                controller.model = this.loadModel(app, controllerName);
                 controller.load = this;
-                this.checkMiddleware(controller, acionName, app, req, res, next);
-
-                // this.checkMiddleware(req, res, next, router, controller);
-                //exec request
-                controller[acionName](params);
+                controller.Promise = Promise;
+                this.checkMiddleware(controller, acionName, app, req, res, function(){
+                    controller[acionName](params);
+                });
             }
             else {
                 next();

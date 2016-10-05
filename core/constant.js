@@ -17,6 +17,11 @@ module.exports = {
     DEFAULT_CONTROLLER: 'index',
     DEFAULT_ACTION: 'index',
 
+    //url
+    base_url: 'http://192.168.1.101:3000',
+    public_url: 'http://192.168.1.101:3000/publics',
+    asset_url: 'http://192.168.1.101:3000/publics/assets',
+
     //aplication
     PORT: 3000,
     ENV: 'developer'

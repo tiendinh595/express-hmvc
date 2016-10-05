@@ -6,5 +6,11 @@
 </head>
 <body>
 <h1>hello hmvc</h1>
+<p>{{= msg }}</p>
+<ul>
+    <% for(var i=0; i<data.length; i++) {%>
+    <li><img src="<%= data[i] %>" alt=""></li>
+    <% } %>
+</ul>
 </body>
 </html>

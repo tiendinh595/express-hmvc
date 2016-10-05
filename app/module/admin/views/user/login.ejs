@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../includes/head') %>
+    <!-- iCheck -->
+    <link rel="stylesheet" href="<%= asset_url %>/css/blue.css">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="login-logo">
+        <a href=""><b>Login</b></a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <% if (typeof(msg) !== 'undefined') { %>
+        <div class="callout callout-danger">
+            <p><%= msg %></p>
+        </div>
+        <% } %>
+
+        <form action="" method="post">
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" name="username" placeholder="Username">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" class="form-control" name="password" placeholder="Password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <label>
+                            <input type="checkbox" name="remember"> Remember Me
+                        </label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+
+    </div>
+    <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery 2.2.3 -->
+<script src="<%= asset_url %>/js/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="<%= asset_url %>/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="<%= asset_url %>/js/icheck.min.js"></script>
+<script>
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    });
+</script>
+</body>
+</html>
